@@ -1,4 +1,4 @@
-# Social Media API
+# Social Media API   &nbsp; &nbsp;  ![Build Status](https://github.com/Artyrio226/job4j_social_media_api/actions/workflows/maven.yml/badge.svg?event=push)
 
 ## Разработка RESTful API для социальной медиа платформы
 
