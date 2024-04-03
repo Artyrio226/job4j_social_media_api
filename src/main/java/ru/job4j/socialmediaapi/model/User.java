@@ -21,7 +21,7 @@ public class User {
 
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Post> posts;
 
     @OneToMany(cascade = CascadeType.ALL)

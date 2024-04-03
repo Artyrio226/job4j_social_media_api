@@ -25,6 +25,7 @@ public class Post {
     private LocalDateTime created = LocalDateTime.now();
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL)
