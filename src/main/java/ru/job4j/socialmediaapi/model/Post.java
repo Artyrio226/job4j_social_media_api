@@ -24,6 +24,9 @@ public class Post {
 
     private LocalDateTime created = LocalDateTime.now();
 
+    @ManyToOne
+    private User user;
+
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Image> images;
 }
