@@ -1,6 +1,5 @@
 create table activity
 (
-    id               serial primary key,
-    subscription_id  int references users (id) not null,
-    user_id          int references users (id) not null
+    id      serial primary key,
+    user_id int references users (id) not null
 );
