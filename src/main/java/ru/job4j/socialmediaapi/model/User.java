@@ -21,6 +21,8 @@ public class User {
 
     private String email;
 
+    private String password;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Post> posts;
 

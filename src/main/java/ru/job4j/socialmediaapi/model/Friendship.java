@@ -20,4 +20,10 @@ public class Friendship {
     private boolean status;
 
     private LocalDateTime created = LocalDateTime.now();
+
+    @ManyToOne
+    private User userFrom;
+
+    @ManyToOne
+    private User userTo;
 }

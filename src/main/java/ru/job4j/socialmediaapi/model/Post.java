@@ -28,6 +28,6 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private Set<Image> images;
 }

@@ -18,4 +18,8 @@ public class Image {
     private String name;
 
     private String path;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 }
