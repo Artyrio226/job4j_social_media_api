@@ -19,10 +19,10 @@ public class Chat {
     private Integer id;
 
     @ManyToOne
-    private User user1;
+    private User firstUser;
 
     @ManyToOne
-    private User user2;
+    private User secondUser;
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Message> messages = new HashSet<>();
