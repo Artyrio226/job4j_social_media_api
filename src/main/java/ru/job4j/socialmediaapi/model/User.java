@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -24,10 +25,10 @@ public class User {
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Post> posts;
+    private Set<Post> posts = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Chat> chats;
+    private Set<Chat> chats = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private Activity activity;

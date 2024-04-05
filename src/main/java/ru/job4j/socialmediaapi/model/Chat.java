@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -24,5 +25,5 @@ public class Chat {
     private User user2;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Message> messages;
+    private Set<Message> messages = new HashSet<>();
 }
