@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Table (name = "friendship")
 public class Friendship {
@@ -22,8 +21,15 @@ public class Friendship {
     private LocalDateTime created = LocalDateTime.now();
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User userFrom;
 
     @ManyToOne
     private User userTo;
+
+    public Friendship(boolean status, User userFrom, User userTo) {
+        this.status = status;
+        this.userFrom = userFrom;
+        this.userTo = userTo;
+    }
 }

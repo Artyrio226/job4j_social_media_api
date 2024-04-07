@@ -22,4 +22,9 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public Image(String name, String path) {
+        this.name = name;
+        this.path = path;
+    }
 }

@@ -21,6 +21,6 @@ public class Activity {
     @OneToOne
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "activity")
     private Set<Subscription> subscriptions = new HashSet<>();
 }

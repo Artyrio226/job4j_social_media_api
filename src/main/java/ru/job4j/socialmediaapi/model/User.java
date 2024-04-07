@@ -30,6 +30,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Chat> chats = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userFrom")
+    private Set<Friendship> friendships = new HashSet<>();
+
     @OneToOne(cascade = CascadeType.ALL)
     private Activity activity;
 }

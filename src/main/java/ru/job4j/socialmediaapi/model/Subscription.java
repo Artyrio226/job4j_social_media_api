@@ -18,7 +18,15 @@ public class Subscription {
     private Integer id;
 
     @ManyToOne
+    private Activity activity;
+
+    @ManyToOne
     private User user;
 
     private LocalDateTime created = LocalDateTime.now();
+
+    public Subscription(Activity activity, User user) {
+        this.activity = activity;
+        this.user = user;
+    }
 }
