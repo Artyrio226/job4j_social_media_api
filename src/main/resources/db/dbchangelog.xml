@@ -12,4 +12,6 @@
     <include file="scripts/006_ddl_create_chat_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/007_ddl_create_message_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/008_ddl_create_activity_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/009_ddl_create_users_chats_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/010_ddl_create_users_friendships_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

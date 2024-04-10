@@ -1,5 +1,6 @@
 package ru.job4j.socialmediaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,10 +26,12 @@ public class Post {
 
     private LocalDateTime created = LocalDateTime.now();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private Set<Image> images = new HashSet<>();
 }

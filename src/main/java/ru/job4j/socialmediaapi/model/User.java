@@ -1,9 +1,9 @@
 package ru.job4j.socialmediaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.EqualsAndHashCode.Include;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,27 +12,39 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table (name = "users")
 public class User {
     @Id
+    @Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    @Include
+    private String username;
 
+    @Include
     private String email;
 
+    @Include
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Post> posts = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_chats",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "chat_id"))
     private Set<Chat> chats = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userFrom")
-    private Set<Friendship> friendships = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<UsersFriendships> friendships = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Activity activity;
 }

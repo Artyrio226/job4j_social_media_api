@@ -19,6 +19,7 @@ public class Activity {
     private Integer id;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "activity")

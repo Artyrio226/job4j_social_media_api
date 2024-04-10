@@ -1,7 +1,6 @@
 package ru.job4j.socialmediaapi.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,16 +19,12 @@ public class Friendship {
 
     private LocalDateTime created = LocalDateTime.now();
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
-    private User userFrom;
+    private User user;
 
-    @ManyToOne
-    private User userTo;
-
-    public Friendship(boolean status, User userFrom, User userTo) {
+    public Friendship(boolean status, User user) {
         this.status = status;
-        this.userFrom = userFrom;
-        this.userTo = userTo;
+        this.user = user;
     }
 }

@@ -37,4 +37,15 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             delete Post p where p.id  = :id
             """)
     int deleteByPostId(@Param("id") Integer id);
+
+    @Modifying
+    @Query("""
+        update Post p
+        set p.title = :#{#post.title},
+        p.text = :#{#post.text}
+        where p.id=:#{#post.id}
+        """)
+    int updatePostById(@Param("post")Post post);
+
+    int deletePostById(int id);
 }

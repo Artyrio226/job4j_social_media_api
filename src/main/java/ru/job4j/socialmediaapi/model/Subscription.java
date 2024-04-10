@@ -18,9 +18,11 @@ public class Subscription {
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name = "activity_id")
     private Activity activity;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private LocalDateTime created = LocalDateTime.now();

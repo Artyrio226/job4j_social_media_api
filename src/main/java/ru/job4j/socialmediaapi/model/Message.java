@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
 @Entity
@@ -25,5 +24,10 @@ public class Message {
     private boolean isRead;
 
     @ManyToOne
+    @JoinColumn(name = "sender_id")
     private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    private Chat chat;
 }

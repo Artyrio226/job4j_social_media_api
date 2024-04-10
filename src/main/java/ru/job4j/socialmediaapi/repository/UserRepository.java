@@ -3,6 +3,7 @@ package ru.job4j.socialmediaapi.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.job4j.socialmediaapi.model.User;
@@ -14,10 +15,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("""
             select user from User user
-            where user.name = :name
+            where user.username = :username
             and user.password = :password
             """)
-    Optional<User> findByNameAndPassword(@Param("name") String title, @Param("password") String password);
+    Optional<User> findByUsernameAndPassword(@Param("username") String title, @Param("password") String password);
 
     @Query("""
             select user from User user
@@ -28,9 +29,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findAllSubscribersById(int id);
 
     @Query("""
-            select user from User user
-            join Friendship fr
-            where (fr.userFrom.id = ?1 or fr.userTo.id = ?1) and fr.status = true
+            select fr.user from Friendship fr
+            join UsersFriendships uf
+            join User user
+            where user.id = ?1 and fr.status = true
             """)
     List<User> findAllFriendsById(int id);
 
@@ -43,4 +45,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             order by p.created desc
             """)
     Page<User> findAllSubscriberPostsByOrderDescWithPagination(int id, Pageable pageable);
+
+    @Modifying
+    @Query("""
+        update User u
+        set u.username = :#{#user.username},
+        u.email = :#{#user.email},
+        u.password = :#{#user.password}
+        where u.id=:#{#user.id}
+        """)
+    int update(@Param("user") User user);
+
+    int deleteUserById(int id);
 }

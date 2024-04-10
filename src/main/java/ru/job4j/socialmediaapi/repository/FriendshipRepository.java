@@ -12,12 +12,18 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Integer>
 
     Optional<Friendship> findById(@Param("user_from_id") Integer id);
 
-    int deleteFriendshipByUserFromId(@Param("user_from_id") int userFromId);
-
     @Modifying(clearAutomatically = true)
     @Query("""
             update Friendship f set f.status = true
             where f.id = :id
             """)
     int updateStatusByFriendshipId(@Param("id") int id);
+
+    @Query("""
+            select fr from Friendship fr
+            join UsersFriendships uf
+            where uf.user.id = ?1
+            and fr.user.id = ?2
+            """)
+    Optional<Friendship> findByUserFromIdAndUserToId(int userFromId, int userToId);
 }
