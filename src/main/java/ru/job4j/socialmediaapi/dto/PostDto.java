@@ -1,36 +1,25 @@
-package ru.job4j.socialmediaapi.model;
+package ru.job4j.socialmediaapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.job4j.socialmediaapi.model.Image;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
-@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table (name = "posts")
-public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PostDto {
     private Integer id;
-
     private String title;
-
     private String text;
-
     private LocalDateTime created = LocalDateTime.now();
+    private int user;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private Set<Image> images = new HashSet<>();
 }

@@ -3,6 +3,7 @@ package ru.job4j.socialmediaapi.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.job4j.socialmediaapi.dto.PostDto;
 import ru.job4j.socialmediaapi.model.Image;
 import ru.job4j.socialmediaapi.model.Post;
 import ru.job4j.socialmediaapi.model.User;
@@ -25,14 +26,17 @@ public class PostService {
         return postRepository.findById(id);
     }
 
-    public Optional<Post> createPost(User user, String title, String text, Set<Image> images) {
+    public Optional<Post> createPost(int userId, String title, String text, Set<Image> images) {
         Post post = new Post();
         post.setTitle(title);
         post.setText(text);
         post.getImages().addAll(images);
-        userService.findById(user.getId());
-        post.setUser(user);
-        user.getPosts().add(post);
+        Optional<User> byId = userService.findById(userId);
+        if (byId.isPresent()) {
+            User user = byId.get();
+            post.setUser(user);
+            user.getPosts().add(post);
+        }
         return Optional.of(postRepository.save(post));
     }
 
@@ -58,13 +62,18 @@ public class PostService {
         return result;
     }
 
-    public boolean update(Post post) {
+    public boolean update(PostDto post) {
+        boolean rsl = false;
         Optional<Post> optionalPost = findById(post.getId());
         if (optionalPost.isPresent()) {
+            Post rslPost = optionalPost.get();
+            rslPost.setTitle(post.getTitle());
+            rslPost.setText(post.getText());
             imageRepository.deleteAll(optionalPost.get().getImages());
             imageRepository.saveAll(post.getImages());
+            rsl = postRepository.updatePostById(rslPost) > 0;
         }
-        return postRepository.updatePostById(post) > 0;
+        return rsl;
     }
 
     public boolean deletePostById(int id) {

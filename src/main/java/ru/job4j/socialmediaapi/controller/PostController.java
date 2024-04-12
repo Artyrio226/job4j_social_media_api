@@ -9,9 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.job4j.socialmediaapi.dto.PostDto;
 import ru.job4j.socialmediaapi.model.Post;
 import ru.job4j.socialmediaapi.service.PostService;
-import ru.job4j.socialmediaapi.service.UserService;
 
 @Validated
 @AllArgsConstructor
@@ -32,7 +32,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Post> save(@RequestBody Post post) {
+    public ResponseEntity<PostDto> save(@RequestBody PostDto post) {
         postService.createPost(post.getUser(),
                 post.getTitle(),
                 post.getText(),
@@ -49,7 +49,7 @@ public class PostController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody Post post) {
+    public ResponseEntity<Void> update(@RequestBody PostDto post) {
         return postService.update(post)
                 ? ResponseEntity.ok().build()
                 : ResponseEntity.notFound().build();
@@ -57,7 +57,7 @@ public class PostController {
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public void change(@RequestBody Post post) {
+    public void change(@RequestBody PostDto post) {
         postService.update(post);
     }
 

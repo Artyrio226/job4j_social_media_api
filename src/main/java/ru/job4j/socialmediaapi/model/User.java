@@ -3,32 +3,28 @@ package ru.job4j.socialmediaapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.EqualsAndHashCode.Include;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table (name = "users")
 public class User {
     @Id
-    @Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Include
     private String username;
 
-    @Include
     private String email;
 
-    @Include
     private String password;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Post> posts = new HashSet<>();
 
