@@ -10,6 +10,7 @@ import ru.job4j.socialmediaapi.model.User;
 import ru.job4j.socialmediaapi.repository.ImageRepository;
 import ru.job4j.socialmediaapi.repository.PostRepository;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -78,5 +79,9 @@ public class PostService {
 
     public boolean deletePostById(int id) {
         return postRepository.deletePostById(id) > 0;
+    }
+
+    public List<Post> findAll() {
+        return postRepository.findAll();
     }
 }
