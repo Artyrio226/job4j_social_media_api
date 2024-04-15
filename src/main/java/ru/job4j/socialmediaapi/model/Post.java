@@ -2,6 +2,7 @@ package ru.job4j.socialmediaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,8 +20,10 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Поле 'title' должно быть заполнено")
     private String title;
 
+    @NotBlank(message = "Поле 'text' должно быть заполнено")
     private String text;
 
     private LocalDateTime created = LocalDateTime.now();

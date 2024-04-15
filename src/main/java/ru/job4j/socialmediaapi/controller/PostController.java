@@ -1,6 +1,6 @@
 package ru.job4j.socialmediaapi.controller;
 
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -34,7 +34,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostDto> save(@RequestBody PostDto post) {
+    public ResponseEntity<PostDto> save(@Valid @RequestBody PostDto post) {
         postService.createPost(post);
         var uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -47,7 +47,7 @@ public class PostController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody PostDto post) {
+    public ResponseEntity<Void> update(@Valid @RequestBody PostDto post) {
         if (!postService.update(post)) {
             throw new BadRequestException("Не удалось обновить");
         }
@@ -56,12 +56,14 @@ public class PostController {
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public void change(@RequestBody PostDto post) {
+    public void change(@Valid @RequestBody PostDto post) {
         postService.update(post);
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> removeById(@PathVariable int postId) throws EntityNotFoundException {
+    public ResponseEntity<Void> removeById(@PathVariable
+                                               @Min(value = 1, message = "номер ресурса должен быть 1 и более")
+                                               int postId) {
         if (!postService.deletePostById(postId)) {
             throw new BadRequestException("Не удалось удалить");
         }

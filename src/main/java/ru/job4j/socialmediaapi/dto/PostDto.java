@@ -1,6 +1,7 @@
 package ru.job4j.socialmediaapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import ru.job4j.socialmediaapi.model.Image;
 
@@ -14,7 +15,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class PostDto {
     private Integer id;
+
+    @NotBlank(message = "Поле 'title' должно быть заполнено")
     private String title;
+
+    @NotBlank(message = "Поле 'text' должно быть заполнено")
     private String text;
     private LocalDateTime created = LocalDateTime.now();
     private int user;

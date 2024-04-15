@@ -2,6 +2,9 @@ package ru.job4j.socialmediaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.HashSet;
@@ -18,10 +21,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Поле 'username' должно быть заполнено")
     private String username;
 
+    @Email(message = "Email не корректен")
     private String email;
 
+    @NotBlank(message = "Поле 'password' должно быть заполнено")
     private String password;
 
     @JsonIgnore

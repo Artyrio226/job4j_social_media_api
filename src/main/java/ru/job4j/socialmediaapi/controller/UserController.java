@@ -1,5 +1,6 @@
 package ru.job4j.socialmediaapi.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody User user) {
+    public ResponseEntity<User> save(@Valid @RequestBody User user) {
         userService.createUser(user);
         var uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody User user) {
+    public ResponseEntity<Void> update(@Valid  @RequestBody User user) {
         if (!userService.updateUser(user)) {
             throw new BadRequestException("Не удалось обновить");
         }
@@ -54,12 +55,14 @@ public class UserController {
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public void change(@RequestBody User user) {
+    public void change(@Valid @RequestBody User user) {
         userService.updateUser(user);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> removeById(@PathVariable int userId) {
+    public ResponseEntity<Void> removeById(@PathVariable
+                                               @Min(value = 1, message = "номер ресурса должен быть 1 и более")
+                                               int userId) {
         if (!userService.deleteById(userId)) {
             throw new BadRequestException("Не удалось удалить");
         }
