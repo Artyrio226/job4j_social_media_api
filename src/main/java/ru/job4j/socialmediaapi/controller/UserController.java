@@ -3,12 +3,13 @@ package ru.job4j.socialmediaapi.controller;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.job4j.socialmediaapi.exception.BadRequestException;
+import ru.job4j.socialmediaapi.exception.ResourceNotFoundException;
 import ru.job4j.socialmediaapi.model.User;
 import ru.job4j.socialmediaapi.service.UserService;
 
@@ -27,7 +28,7 @@ public class UserController {
                                     Integer userId) {
         return userService.findById(userId)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден"));
     }
 
     @PostMapping
@@ -45,9 +46,10 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody User user) {
-        return userService.updateUser(user)
-            ? ResponseEntity.ok().build()
-            : ResponseEntity.notFound().build();
+        if (!userService.updateUser(user)) {
+            throw new BadRequestException("Не удалось обновить");
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping
@@ -58,8 +60,9 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> removeById(@PathVariable int userId) {
-        return userService.deleteById(userId)
-            ?  ResponseEntity.noContent().build()
-            : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (!userService.deleteById(userId)) {
+            throw new BadRequestException("Не удалось удалить");
+        }
+        return ResponseEntity.noContent().build();
     }
 }

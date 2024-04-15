@@ -1,15 +1,17 @@
 package ru.job4j.socialmediaapi.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.job4j.socialmediaapi.dto.PostDto;
+import ru.job4j.socialmediaapi.exception.BadRequestException;
+import ru.job4j.socialmediaapi.exception.ResourceNotFoundException;
 import ru.job4j.socialmediaapi.model.Post;
 import ru.job4j.socialmediaapi.service.PostService;
 
@@ -28,16 +30,12 @@ public class PostController {
                                     Integer postId) {
         return postService.findById(postId)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Пост не найден"));
     }
 
     @PostMapping
     public ResponseEntity<PostDto> save(@RequestBody PostDto post) {
-        postService.createPost(post.getUser(),
-                post.getTitle(),
-                post.getText(),
-                post.getImages()
-                );
+        postService.createPost(post);
         var uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -50,9 +48,10 @@ public class PostController {
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody PostDto post) {
-        return postService.update(post)
-                ? ResponseEntity.ok().build()
-                : ResponseEntity.notFound().build();
+        if (!postService.update(post)) {
+            throw new BadRequestException("Не удалось обновить");
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping
@@ -62,9 +61,10 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> removeById(@PathVariable int postId) {
-        return postService.deletePostById(postId)
-                ?  ResponseEntity.noContent().build()
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity<Void> removeById(@PathVariable int postId) throws EntityNotFoundException {
+        if (!postService.deletePostById(postId)) {
+            throw new BadRequestException("Не удалось удалить");
+        }
+        return ResponseEntity.noContent().build();
     }
 }

@@ -27,12 +27,12 @@ public class PostService {
         return postRepository.findById(id);
     }
 
-    public Optional<Post> createPost(int userId, String title, String text, Set<Image> images) {
+    public Optional<Post> createPost(PostDto postDto) {
         Post post = new Post();
-        post.setTitle(title);
-        post.setText(text);
-        post.getImages().addAll(images);
-        Optional<User> byId = userService.findById(userId);
+        post.setTitle(postDto.getTitle());
+        post.setText(postDto.getText());
+        post.getImages().addAll(postDto.getImages());
+        Optional<User> byId = userService.findById(postDto.getId());
         if (byId.isPresent()) {
             User user = byId.get();
             post.setUser(user);
