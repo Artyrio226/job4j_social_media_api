@@ -1,6 +1,7 @@
 package ru.job4j.socialmediaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,18 +17,22 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table (name = "users")
+@Schema(description = "User Model Information")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotBlank(message = "Поле 'username' должно быть заполнено")
+    @Schema(description = "UserName title", example = "Mediator")
     private String username;
 
     @Email(message = "Email не корректен")
+    @Schema(description = "Users email", example = "test123@mail.ru")
     private String email;
 
     @NotBlank(message = "Поле 'password' должно быть заполнено")
+    @Schema(description = "Users password", example = "34Rguy88saW")
     private String password;
 
     @JsonIgnore
